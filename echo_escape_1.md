@@ -8,7 +8,7 @@
 
 Challenge là một dịch vụ echo "secure". Khi kết nối qua netcat:
 
-![Mô tả challenge trên picoCTF](pwn1.png)
+![Mô tả challenge trên picoCTF]([pwn1.png](https://github.com/tha-lo-rien/Pwn-Picoctf/blob/6845169101721a9f385ee67203574c928e7edf34/pwn1.png))
 Kết nối thực tế:
 
 ![Kết nối netcat và giao diện ban đầu](pwn2.png)
