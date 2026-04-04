@@ -12,6 +12,8 @@ Challenge là một dịch vụ echo "secure". Khi kết nối qua netcat:
 Kết nối thực tế:
 
 ![Kết nối netcat và giao diện ban đầu](https://github.com/tha-lo-rien/Pwn-Picoctf/blob/4d3063d4dc3044eef990c713d5222fff7260d899/pwn2.png)
+Nhập thử dữ liệu xem chương trình trả ra kết quả gì
+![dùng thử chương trình](https://github.com/tha-lo-rien/Pwn-Picoctf/blob/4d3063d4dc3044eef990c713d5222fff7260d899/pwn3.png)
 
 ## 2. Tải file binary và chuẩn bị
 Sao chép địa chỉ link file binary
