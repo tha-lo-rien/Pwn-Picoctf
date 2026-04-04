@@ -11,27 +11,27 @@ Challenge là một dịch vụ echo "secure". Khi kết nối qua netcat:
 ![Mô tả challenge trên picoCTF](https://github.com/tha-lo-rien/Pwn-Picoctf/blob/6845169101721a9f385ee67203574c928e7edf34/pwn1.png)
 Kết nối thực tế:
 
-![Kết nối netcat và giao diện ban đầu](pwn2.png)
+![Kết nối netcat và giao diện ban đầu](https://github.com/tha-lo-rien/Pwn-Picoctf/blob/4d3063d4dc3044eef990c713d5222fff7260d899/pwn2.png)
 
 ## 2. Tải file binary và chuẩn bị
 Sao chép địa chỉ link file binary
 
-![Chi tiết challenge và nút copy link](pwn4.png)
+![Chi tiết challenge và nút copy link](https://github.com/tha-lo-rien/Pwn-Picoctf/blob/4d3063d4dc3044eef990c713d5222fff7260d899/pwn4.png)
 Tải file vuln từ server challenge:
 Chúng ta sử dụng lệnh wget để tải file vuln về máy của chúng ta
 
-![Sử dụng wget tải binary](pwn5.png)
+![Sử dụng wget tải binary](https://github.com/tha-lo-rien/Pwn-Picoctf/blob/4d3063d4dc3044eef990c713d5222fff7260d899/pwn5.png)
 
 Cấp quyền thực thi cho binary:
 Ta sử dụng lệnh "chmod +x ten_file_binary" để cho phép file binary này chạy local trên máy tính của chúng ta
 
-![Chạy chmod +x vuln.6](chaylocal.png)
+![Chạy chmod +x vuln.6](https://github.com/tha-lo-rien/Pwn-Picoctf/blob/4d3063d4dc3044eef990c713d5222fff7260d899/chaylocal.png)
 
 ## 3. Phân tích Source Code
 
 Source code được cung cấp:
 
-![Source code vuln.c](sourcecodepwn.png)
+![Source code vuln.c](https://github.com/tha-lo-rien/Pwn-Picoctf/blob/4d3063d4dc3044eef990c713d5222fff7260d899/sourcecodepwn.png)
 
 **Lỗ hổng rõ ràng:**
 - Buffer `char buf[32]` chỉ 32 bytes.
@@ -42,20 +42,20 @@ Hàm `win()` sẽ mở `flag.txt` và in ra flag.
 ## 4. Debug với gdb + pwndbg
 **Đầu tiên là và vô cùng quan trọng :** sử dụng lệnh **"file ./ten_file_binary_cua_ban" để check xem cấu hình của file binary**
 
-![check cau hinh file](checkbit.png)
+![check cau hinh file](https://github.com/tha-lo-rien/Pwn-Picoctf/blob/4d3063d4dc3044eef990c713d5222fff7260d899/checkbit.png)
 
 Tiếp theo
 Mở binary trong gdb:
 
-![Mở vuln.6 bằng gdb](pwn7.png)
+![Mở vuln.6 bằng gdb](https://github.com/tha-lo-rien/Pwn-Picoctf/blob/4d3063d4dc3044eef990c713d5222fff7260d899/pwn7.png)
 
 Xem danh sách hàm:
 
-![Danh sách functions trong binary](pwn8.png)
+![Danh sách functions trong binary](https://github.com/tha-lo-rien/Pwn-Picoctf/blob/4d3063d4dc3044eef990c713d5222fff7260d899/pwn8.png)
 
 Tìm địa chỉ hàm main và win:
 
-![Tìm địa chỉ hàm main](pwn9.png)
+![Tìm địa chỉ hàm main](https://github.com/tha-lo-rien/Pwn-Picoctf/blob/4d3063d4dc3044eef990c713d5222fff7260d899/pwn9.png)
 
 **win() address = 0x401256**
 
@@ -63,18 +63,18 @@ Tìm địa chỉ hàm main và win:
 
 Tạo cyclic pattern:
 
-![Tạo cyclic pattern 200 bytes](pwn10.png)   <!-- pwn10.png -->
+![Tạo cyclic pattern 200 bytes](https://github.com/tha-lo-rien/Pwn-Picoctf/blob/4d3063d4dc3044eef990c713d5222fff7260d899/pwn10.png)   <!-- pwn10.png -->
 
 Chạy binary với input dài gây crash:
 
-![Chạy binary với cyclic pattern](pwn11.png)
+![Chạy binary với cyclic pattern](https://github.com/tha-lo-rien/Pwn-Picoctf/blob/4d3063d4dc3044eef990c713d5222fff7260d899/pwn11.png)
 Sau khi chạy một chuỗi kí tự dài đã khiến cương trình bị crash
 Đây chính là giá trị của Register RIP (Register Instruction Pointer) tại thời điểm chương trình crash (Segmentation Fault)
-![Gía trị của Register RIP](pwn12.png)
+![Gía trị của Register RIP](https://github.com/tha-lo-rien/Pwn-Picoctf/blob/4d3063d4dc3044eef990c713d5222fff7260d899/pwn12.png)
 Tìm offset chính xác:
 Ta sử dụng lệnh cyclic -l "giá trị RIP vừa tìm được để tìm offset
 
-![Sử dụng cyclic -l tìm offset](pwn13.png)   <!-- pwn13.png -->
+![Sử dụng cyclic -l tìm offset](https://github.com/tha-lo-rien/Pwn-Picoctf/blob/4d3063d4dc3044eef990c713d5222fff7260d899/pwn13.png)   <!-- pwn13.png -->
 
 **Kết quả:** Offset = **40 bytes**
 
@@ -105,7 +105,7 @@ p.interactive()#nhận kết quả
 Sau đó chạy lệnh python3 "tên_file_payload.py" sau đó để file payload làm việc của nó thôi
 Cuối cùng sau khi chạy thì sẽ xuất hiện flag của challenge này :
 
-![FLAG](flag.png)
+![FLAG](https://github.com/tha-lo-rien/Pwn-Picoctf/blob/4d3063d4dc3044eef990c713d5222fff7260d899/flag.png)
 
 
 
