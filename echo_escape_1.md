@@ -17,6 +17,8 @@ Nhập thử dữ liệu xem chương trình trả ra kết quả gì
 
 ![dùng thử chương trình](https://github.com/tha-lo-rien/Pwn-Picoctf/blob/4d3063d4dc3044eef990c713d5222fff7260d899/pwn3.png)
 
+Có thể thấy chương trình in ra Hello + dữ liệu vừa nhập sau đó là dòng "Thank you for using our service"
+
 ## 2. Tải file binary và chuẩn bị
 Sao chép địa chỉ link file binary
 
