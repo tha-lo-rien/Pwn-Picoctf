@@ -74,9 +74,12 @@ Tạo cyclic pattern:
 Chạy binary với input dài gây crash:
 
 ![Chạy binary với cyclic pattern](https://github.com/tha-lo-rien/Pwn-Picoctf/blob/4d3063d4dc3044eef990c713d5222fff7260d899/pwn11.png)
+
 Sau khi chạy một chuỗi kí tự dài đã khiến cương trình bị crash
 Đây chính là giá trị của Register RIP (Register Instruction Pointer) tại thời điểm chương trình crash (Segmentation Fault)
+
 ![Gía trị của Register RIP](https://github.com/tha-lo-rien/Pwn-Picoctf/blob/4d3063d4dc3044eef990c713d5222fff7260d899/pwn12.png)
+
 Tìm offset chính xác:
 Ta sử dụng lệnh cyclic -l "giá trị RIP vừa tìm được để tìm offset
 
