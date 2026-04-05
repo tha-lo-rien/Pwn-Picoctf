@@ -76,7 +76,7 @@ Có thể thấy rằng file này không có lớp bảo vệ PIE có nghĩa là
 
 ![Danh sách functions trong binary](https://github.com/tha-lo-rien/Pwn-Picoctf/blob/4d3063d4dc3044eef990c713d5222fff7260d899/pwn8.png)
 
-Việc xem chương trình sử dụng những hàm nòa là vô cùng quan trọng
+Việc xem chương trình sử dụng những hàm nào là vô cùng quan trọng
 
 Chúng ta có thể xem tất cả các hàm qua gdb bằng câu lệnh 'info function'
 
