@@ -26,9 +26,11 @@ Tải tệp tin thực thi (binary) về môi trường local để tiến hành
 *Sao chép đường dẫn tải xuống tệp tin binary.*
 
 ![Sử dụng wget tải binary](https://github.com/tha-lo-rien/Pwn-Picoctf/blob/4d3063d4dc3044eef990c713d5222fff7260d899/pwn5.png)
+
 *Sử dụng lệnh `wget` để tải tệp `vuln` về máy.*
 
 ![Chạy chmod +x vuln.6](https://github.com/tha-lo-rien/Pwn-Picoctf/blob/4d3063d4dc3044eef990c713d5222fff7260d899/chaylocal.png)
+
 *Cấp quyền thực thi (`chmod +x`) cho binary để phân tích động.*
 
 ---
