@@ -176,8 +176,12 @@ Hai câu lệnh trên dùng để gửi mã độc và sau khi kết thúc cho p
 
 ## 7. Thực thi file payload của bạn để lấy flag
 **Lưu ý!!!!: phải để địa chỉ file payload và file binary trong cùng một thư mục**
+
 Sau đó chạy lệnh python3 "tên_file_payload.py" sau đó để file payload làm việc của nó thôi
+
 Cuối cùng sau khi chạy thì sẽ xuất hiện flag của challenge này :
+
+TADA !!!!!! FLAG CỦA TA ĐÂY RỒI
 
 ![FLAG](https://github.com/tha-lo-rien/Pwn-Picoctf/blob/4d3063d4dc3044eef990c713d5222fff7260d899/flag.png)
 
