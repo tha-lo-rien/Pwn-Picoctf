@@ -83,7 +83,7 @@ Sau khi chạy một chuỗi kí tự dài đã khiến cương trình bị cras
 ![Gía trị của Register RIP](https://github.com/tha-lo-rien/Pwn-Picoctf/blob/4d3063d4dc3044eef990c713d5222fff7260d899/pwn12.png)
 
 Tìm offset chính xác:
-Ta sử dụng lệnh cyclic -l "giá trị RIP vừa tìm được để tìm offset
+Ta sử dụng lệnh `cyclic -l + giá_trị_RIP` để tìm offset
 
 ![Sử dụng cyclic -l tìm offset](https://github.com/tha-lo-rien/Pwn-Picoctf/blob/4d3063d4dc3044eef990c713d5222fff7260d899/pwn13.png)   <!-- pwn13.png -->
 
