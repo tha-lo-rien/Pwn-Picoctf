@@ -17,21 +17,21 @@ Nhập thử dữ liệu xem chương trình trả ra kết quả gì
 
 ![dùng thử chương trình](https://github.com/tha-lo-rien/Pwn-Picoctf/blob/4d3063d4dc3044eef990c713d5222fff7260d899/pwn3.png)
 
-Có thể thấy chương trình in ra Hello + dữ liệu vừa nhập sau đó là dòng "Thank you for using our service"
+**Quan sát:** Chương trình phản hồi lại chuỗi Hello `[input]` kèm theo thông báo kết thúc.
 
 ## 2. Tải file binary và chuẩn bị
-Sao chép địa chỉ link file binary
+Tải tệp tin thực thi (binary) về môi trường local để tiến hành phân tích kỹ thuật.
 
 ![Chi tiết challenge và nút copy link](https://github.com/tha-lo-rien/Pwn-Picoctf/blob/4d3063d4dc3044eef990c713d5222fff7260d899/pwn4.png)
-Tải file vuln từ server challenge:
-Chúng ta sử dụng lệnh wget để tải file vuln về máy của chúng ta
+*Sao chép đường dẫn tải xuống tệp tin binary.*
 
 ![Sử dụng wget tải binary](https://github.com/tha-lo-rien/Pwn-Picoctf/blob/4d3063d4dc3044eef990c713d5222fff7260d899/pwn5.png)
-
-Cấp quyền thực thi cho binary:
-Ta sử dụng lệnh "chmod +x ten_file_binary" để cho phép file binary này chạy local trên máy tính của chúng ta
+*Sử dụng lệnh `wget` để tải tệp `vuln` về máy.*
 
 ![Chạy chmod +x vuln.6](https://github.com/tha-lo-rien/Pwn-Picoctf/blob/4d3063d4dc3044eef990c713d5222fff7260d899/chaylocal.png)
+*Cấp quyền thực thi (`chmod +x`) cho binary để phân tích động.*
+
+---
 
 ## 3. Phân tích Source Code
 
@@ -46,7 +46,7 @@ Source code được cung cấp:
 Hàm `win()` sẽ mở `flag.txt` và in ra flag.
 
 ## 4. Debug với gdb + pwndbg
-**Đầu tiên là và vô cùng quan trọng :** sử dụng lệnh **"file ./ten_file_binary_cua_ban" để check xem cấu hình của file binary**
+**Đầu tiên và vô cùng quan trọng :** sử dụng lệnh **"file ./ten_file_binary" để check xem cấu hình của file binary**
 
 ![check cau hinh file](https://github.com/tha-lo-rien/Pwn-Picoctf/blob/4d3063d4dc3044eef990c713d5222fff7260d899/checkbit.png)
 
