@@ -17,7 +17,7 @@ Nhập thử dữ liệu xem chương trình trả ra kết quả gì
 
 ![dùng thử chương trình](https://github.com/tha-lo-rien/Pwn-Picoctf/blob/4d3063d4dc3044eef990c713d5222fff7260d899/pwn3.png)
 
-**Quan sát:** Chương trình phản hồi lại chuỗi Hello `[input]` kèm theo thông báo kết thúc.
+**Quan sát:** Chương trình phản hồi lại chuỗi Hello kết hợp với dữ liệu mà chúng ta vừa nhập vào, và đi kèm một thông báo thông báo kết thúc.
 
 ## 2. Tải file binary và chuẩn bị
 Tải tệp tin thực thi (binary) về môi trường local để tiến hành phân tích kỹ thuật.
@@ -27,11 +27,11 @@ Tải tệp tin thực thi (binary) về môi trường local để tiến hành
 
 ![Sử dụng wget tải binary](https://github.com/tha-lo-rien/Pwn-Picoctf/blob/4d3063d4dc3044eef990c713d5222fff7260d899/pwn5.png)
 
-*Sử dụng lệnh `wget` để tải tệp `vuln` về máy.*
+*Sử dụng lệnh wget để tải tệp binary về máy.*
 
 ![Chạy chmod +x vuln.6](https://github.com/tha-lo-rien/Pwn-Picoctf/blob/4d3063d4dc3044eef990c713d5222fff7260d899/chaylocal.png)
 
-*Cấp quyền thực thi (`chmod +x`) cho binary để phân tích động.*
+*Tiếp theo chúng ta sử dụng câu lệnh chmod +x tên tên file binary để cung cấp quyền chạy trên máy của chúng ta*
 
 ---
 
@@ -41,27 +41,35 @@ Source code được cung cấp:
 
 ![Source code vuln.c](https://github.com/tha-lo-rien/Pwn-Picoctf/blob/4d3063d4dc3044eef990c713d5222fff7260d899/sourcecodepwn.png)
 
-**Lỗ hổng rõ ràng:**
-- Buffer `char buf[32]` chỉ 32 bytes.
-- Nhưng dùng `read(0, buf, 128)` → **Stack Buffer Overflow**.
+Phân tích code một chút chúng ta có thể thấy được chường trình chỉ cho buffer 32 bytes nhưng lại cho người dùng nhập vào tối đa lên đến 128 bytes
+Đây là dấu hiệu rõ ràng của Stack Buffer Overflow hay còn được gọi là tràn bộ đệm
+Bạn có thể liên tưởng đến một cái ly khi bị rót quá đầy thì nước dần dần sẽ tràn ra khu vực khác và trong thử thách này cũng vậy
+Mục tiêu của chúng ta là phải làm sao để khiến cho các bytes dữ liệu của chúng ta ghi đè đúng vào vị trí của hàm win từ đó đọc được flag của thử thách này
 
-Hàm `win()` sẽ mở `flag.txt` và in ra flag.
-
-## 4. Debug với gdb + pwndbg
-**Đầu tiên và vô cùng quan trọng :** sử dụng lệnh **"file ./ten_file_binary" để check xem cấu hình của file binary**
+![Tên mô tả ảnh](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmEs0fL8NkDoIMjOlkwFWk4YMrjF2YB4YGGw&s)
+Đây chính là hình ảnh minh họa cho lỗi tràn bộ đệm mà ta đang khai thác
+## 4. Debug với gdb và pwndbg
+**Đầu tiên và vô cùng quan trọng chúng ta sử dụng câu lện **"file ./ten_file_binary" để check xem cấu hình của file binary**
+Sau khi thực thi lệnh này ta có thể thấy được những thông số cơ bản của file nhưu : Tên, Định dạng file là ELF, Kiến trúc là 64-bit, Sắp xeeos Bytes là LSB, Tập Lệnh là x86-64, và quan trọng nhất là không stripped
+Khi file không striped chúng ta có thể dễ dàng tìm thấy các hàm như là 'main', 'win'
 
 ![check cau hinh file](https://github.com/tha-lo-rien/Pwn-Picoctf/blob/4d3063d4dc3044eef990c713d5222fff7260d899/checkbit.png)
 
 Tiếp theo
-Mở binary trong gdb:
+Chúng ta quét trương trình bằng gdb bằng lệnh gdb ./ten_file_binary
 
 ![Mở vuln.6 bằng gdb](https://github.com/tha-lo-rien/Pwn-Picoctf/blob/4d3063d4dc3044eef990c713d5222fff7260d899/pwn7.png)
+Chúng ta sử dụng checksec để kiểm tra xem file binary được trang bị những lớp phòng thủ nào
 
-Xem danh sách hàm:
 
 ![Danh sách functions trong binary](https://github.com/tha-lo-rien/Pwn-Picoctf/blob/4d3063d4dc3044eef990c713d5222fff7260d899/pwn8.png)
+Việc xem chương trình sử dụng những hàm nòa là vô cùng quan trọng
+Chúng ta có thể xem tất cả các hàm qua gdb bằng câu lệnh 'info function'
+Sau khi thực thi câu lệnh gdb sẽ hiện ra tất cả các hàm được sử dụng trong khi chạy chương trình
 
-Tìm địa chỉ hàm main và win:
+
+
+
 
 ![Tìm địa chỉ hàm main](https://github.com/tha-lo-rien/Pwn-Picoctf/blob/4d3063d4dc3044eef990c713d5222fff7260d899/pwn9.png)
 
