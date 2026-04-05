@@ -57,7 +57,7 @@ Mục tiêu của chúng ta là phải làm sao để khiến cho các bytes d�
 
 **Đầu tiên và vô cùng quan trọng chúng ta sử dụng câu lện **"file ./ten_file_binary" để check xem cấu hình của file binary**
 
-Sau khi thực thi lệnh này ta có thể thấy được những thông số cơ bản của file như : Tên, Định dạng file là ELF, Kiến trúc là 64-bit, Sắp xeeos Bytes là LSB, Tập Lệnh là x86-64, và quan trọng nhất là không stripped
+Sau khi thực thi lệnh này ta có thể thấy được những thông số cơ bản của file như : Tên, Định dạng file là ELF, Kiến trúc là 64-bit, Sắp xếp Bytes là LSB, Tập Lệnh là x86-64, và quan trọng nhất là không stripped
 
 Khi file không striped chúng ta có thể dễ dàng tìm thấy các hàm như là 'main', 'win'
 
