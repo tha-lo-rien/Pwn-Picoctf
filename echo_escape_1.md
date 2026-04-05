@@ -92,8 +92,9 @@ Sau khi quét chúng ta nhận được địa chỉ hàm win:
 
 ## 5. Tìm Offset đến Return Address
 
-Như mình phân tích ở trên bài này có rất nhiều dấu hiệu cho thấy rằng khả năng cao là lỗi tràn bộ đêm nên chúng ta sẽ tạo một chuỗi kí tự dài hơn chương trình có thể buf nhằm crash trương trình bằng câu lệnh cyclic
-200 nhằm tạo ra 200 kí tự ngẫu nhiên để nhập vào chương trình nhằm khiến chương trình bị crash
+Như mình phân tích ở trên bài này có rất nhiều dấu hiệu cho thấy rằng khả năng cao là lỗi tràn bộ đêm nên chúng ta sẽ tạo một chuỗi kí tự dài hơn chương trình có thể buf nhằm crash trương trình 
+
+Bằng câu lệnh cyclic 200 ta tạo ra 200 kí tự ngẫu nhiên để nhập vào chương trình nhằm khiến chương trình bị crash
 
 ![Tạo cyclic pattern 200 bytes](https://github.com/tha-lo-rien/Pwn-Picoctf/blob/4d3063d4dc3044eef990c713d5222fff7260d899/pwn10.png)   <!-- pwn10.png -->
 
