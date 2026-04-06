@@ -41,7 +41,7 @@ Source code được cung cấp:
 
 ![Source code vuln.c](https://github.com/tha-lo-rien/Pwn-Picoctf/blob/4d3063d4dc3044eef990c713d5222fff7260d899/sourcecodepwn.png)
 
-Phân tích code một chút chúng ta có thể thấy được chường trình chỉ cho buffer 32 bytes nhưng lại cho người dùng nhập vào tối đa lên đến 128 bytes
+Phân tích code một chút chúng ta có thể thấy được chương trình chỉ cho buffer 32 bytes nhưng lại cho người dùng nhập vào tối đa lên đến 128 bytes
 
 Đây là dấu hiệu rõ ràng của Stack Buffer Overflow hay còn được gọi là tràn bộ đệm
 
@@ -64,7 +64,7 @@ Khi file không striped chúng ta có thể dễ dàng tìm thấy các hàm nh�
 ![check cau hinh file](https://github.com/tha-lo-rien/Pwn-Picoctf/blob/4d3063d4dc3044eef990c713d5222fff7260d899/checkbit.png)
 
 Tiếp theo
-Chúng ta quét trương trình bằng gdb bằng lệnh gdb ./ten_file_binary
+Chúng ta quét chuương trình bằng gdb bằng lệnh gdb ./ten_file_binary
 
 ![Mở vuln.6 bằng gdb](https://github.com/tha-lo-rien/Pwn-Picoctf/blob/4d3063d4dc3044eef990c713d5222fff7260d899/pwn7.png)
 
@@ -72,7 +72,7 @@ Chúng ta sử dụng checksec để kiểm tra xem file binary được trang b
 ![checksec](https://github.com/Writeup-Challenge-Le-Nam-Thang/Pwn-Picoctf/blob/329acef68c463e8fcea5890be5aaf7223c4897da/checksec.png)
 
 Quá là may mắn !!!!!
-Có thể thấy rằng file này không có lớp bảo vệ PIE có nghĩa là hàm địa chỉ của hàm win sẽ ở một vị trí cố định và không thay đổi trong suốt quá trình ta chạy chương trình
+Có thể thấy rằng file này không có lớp bảo vệ PIE có nghĩa là địa chỉ của hàm win sẽ ở một vị trí cố định và không thay đổi trong suốt quá trình ta chạy chương trình
 
 ![Danh sách functions trong binary](https://github.com/tha-lo-rien/Pwn-Picoctf/blob/4d3063d4dc3044eef990c713d5222fff7260d899/pwn8.png)
 
@@ -92,7 +92,7 @@ Sau khi quét chúng ta nhận được địa chỉ hàm win:
 
 ## 5. Tìm Offset đến Return Address
 
-Như mình phân tích ở trên bài này có rất nhiều dấu hiệu cho thấy rằng khả năng cao là lỗi tràn bộ đêm nên chúng ta sẽ tạo một chuỗi kí tự dài hơn chương trình có thể buf nhằm crash trương trình 
+Như mình phân tích ở trên bài này có rất nhiều dấu hiệu cho thấy rằng khả năng cao là lỗi tràn bộ đêm nên chúng ta sẽ tạo một chuỗi kí tự dài hơn chương trình có thể buf nhằm crash chương trình 
 
 Bằng câu lệnh cyclic 200 ta tạo ra 200 kí tự ngẫu nhiên để nhập vào chương trình nhằm khiến chương trình bị crash
 
