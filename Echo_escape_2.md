@@ -8,13 +8,13 @@
 
 Lập trình viên đã rút ra bài học từ các hàm nhập dữ liệu không an toàn và cố gắng bảo mật chương trình bằng cách sử dụng fgets(). Tuy nhiên, không may là họ đã sử dụng nó không đúng cách. Bạn có còn cách nào để đọc được flag không?
 
-![des](des.png)
+![des](https://github.com/Writeup-Challenge-Le-Nam-Thang/Pwn-Picoctf/blob/02f5f50e34dfbffcf29d5980673ba6417c723cd7/des.png)
 
 ## 2. Tải file binary và chuẩn bị
 
 Tải về file source code và file binary mà đề bài đã cho
 Sử dụng `file ./ten_file` để xem cấu hình và sử dụng checksec để xem file binary gồm có những lớp bảo vệ nào
-![cauhinh](file.png)
+![cauhinh](https://github.com/Writeup-Challenge-Le-Nam-Thang/Pwn-Picoctf/blob/02f5f50e34dfbffcf29d5980673ba6417c723cd7/file.png)
 
 Quá là tuyệt!
 Sau khi kiểm tra bằng checksec ta thấy rằng file này không có lớp bảo vệ PIE nghĩa là địa chỉ của hàm win sẽ cố định trong khi chạy chương trình
@@ -22,19 +22,19 @@ Sau khi kiểm tra bằng checksec ta thấy rằng file này không có lớp b
 
 Tiếp theo ta cung cấp quyền chạy file binary như một chương trình bằng cách sử dụng câu lệnh ``chmod +x tên file``
 
-![local](local.png)
+![local](https://github.com/Writeup-Challenge-Le-Nam-Thang/Pwn-Picoctf/blob/02f5f50e34dfbffcf29d5980673ba6417c723cd7/local.png)
 
 Sau đó chạy thử xem chương trình hoạt động như thế nào bằng cách dùng netcat để kết nối với server cho sẵn
 
- ![ketnoi](netcat.png)
+ ![ketnoi](https://github.com/Writeup-Challenge-Le-Nam-Thang/Pwn-Picoctf/blob/02f5f50e34dfbffcf29d5980673ba6417c723cd7/netcat.png)
 
 hoặc chạy local trên máy bằng lệnh ``./tên_file``
 
-![test](test.png)
+![test](https://github.com/Writeup-Challenge-Le-Nam-Thang/Pwn-Picoctf/blob/02f5f50e34dfbffcf29d5980673ba6417c723cd7/test.png)
 
 Sau khi chạy chương trình in ra dòng chữ 'Enter the secret key:' ta nhập thử một chuỗi bất kì
 
-![chay](chay.png)
+![chay](https://github.com/Writeup-Challenge-Le-Nam-Thang/Pwn-Picoctf/blob/02f5f50e34dfbffcf29d5980673ba6417c723cd7/chay.png)
 
 Chương trình in ra "you entered :," kết hợp với chuỗi bạn ta vừa điền 
 
@@ -96,7 +96,7 @@ Ta sử dụng pwndbg để tìm kiếm offset và tìm kiếm địa chỉ hàm
 
 Ta sử dụng pwndbg để tìm kiếm offset và tìm kiếm địa chỉ hàm  ```win```
 
-![win](win.png)
+![win](https://github.com/Writeup-Challenge-Le-Nam-Thang/Pwn-Picoctf/blob/02f5f50e34dfbffcf29d5980673ba6417c723cd7/win.png)
 
 ***Địa chỉ hàm win ở đây là: 0x8049276***
 
@@ -105,15 +105,15 @@ Ta sử dụng pwndbg để tìm kiếm offset và tìm kiếm địa chỉ hàm
 
 Đầu tiên tạo một pattern có độ dài dài hơn độ dài cho phép của chương trình ở đây tôi lấy 200 bằng câu lệnh cyclic
 
-![cyclic](cyclic.png)
+![cyclic](https://github.com/Writeup-Challenge-Le-Nam-Thang/Pwn-Picoctf/blob/02f5f50e34dfbffcf29d5980673ba6417c723cd7/cyclic.png)
 
 Sau đó chạy chương trình và điền đoạn pattern đấy vào 
-![vuln](vuln.png)
+![vuln](https://github.com/Writeup-Challenge-Le-Nam-Thang/Pwn-Picoctf/blob/02f5f50e34dfbffcf29d5980673ba6417c723cd7/vuln.png)
 
 Chương trình đã bị crash và in ra màn hình phân tích của gdb 
 Ta lấy giá trị của hàm EIP để ính offset bằng câu lệnh ``cyclic -l giá trị của EIP`` như có thể thấy ở đây là `0x6161616c `
 
-![a](l.png)
+![a](https://github.com/Writeup-Challenge-Le-Nam-Thang/Pwn-Picoctf/blob/02f5f50e34dfbffcf29d5980673ba6417c723cd7/l.png)
 
 ***Offset ta tìm được chính là 44***
 
@@ -152,7 +152,7 @@ Giải thích qua một chú về payload
 
 Bây giờ ta chỉ cần thực thi file payload và lấy flag thôi
 
-![flag](flag.png)
+![flag](https://github.com/Writeup-Challenge-Le-Nam-Thang/Pwn-Picoctf/blob/02f5f50e34dfbffcf29d5980673ba6417c723cd7/flag.png)
 
 
 
