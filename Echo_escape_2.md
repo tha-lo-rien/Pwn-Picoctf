@@ -1,4 +1,4 @@
-# Writeup: Echo Escape 1 - picoCTF 2026
+# Writeup: Echo Escape 2 - picoCTF 2026
 
 **Category:** Binary Exploitation  
 **Difficulty:** Medium  
