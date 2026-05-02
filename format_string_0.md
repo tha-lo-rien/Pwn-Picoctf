@@ -7,7 +7,7 @@
 
 ## Description
 
-![Challenge Description](des.png)
+![Challenge Description](https://github.com/Writeup-Challenge-Le-Nam-Thang/Pwn-Picoctf/blob/ef65139d409abf3f8fb8399926cd27c5537f7795/des.png)
 
 > Can you use your knowledge of format strings to make the customers happy?
 
@@ -22,7 +22,7 @@ Challenge provides:
 
 When connecting to the server, the program outputs:
 
-![First connection](1.png)
+![First connection](https://github.com/Writeup-Challenge-Le-Nam-Thang/Pwn-Picoctf/blob/ef65139d409abf3f8fb8399926cd27c5537f7795/1.png)
 
 Notice the burger names contain suspicious strings:
 - `Breakf@st_Burger`
@@ -43,7 +43,7 @@ This is a clear hint of a **Format String Vulnerability**: if user input is pass
 Enter your recommendation: %s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s
 ```
 
-![Flag obtained](flag.png)
+![Flag obtained](https://github.com/Writeup-Challenge-Le-Nam-Thang/Pwn-Picoctf/blob/ef65139d409abf3f8fb8399926cd27c5537f7795/flag.png)
 
 ---
 
