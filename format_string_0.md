@@ -2,9 +2,7 @@
 
 **Category:** Binary Exploitation  
 **Difficulty:** Easy  
-**Tags:** `format_string`, `browser_webshell_solvable`  
-**Author:** Cheng Zhang  
-**Solved by:** 34,234 users  
+**Author:** Cheng Zhang
 
 ---
 
